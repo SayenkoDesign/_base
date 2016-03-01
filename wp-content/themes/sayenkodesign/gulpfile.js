@@ -35,10 +35,7 @@ var options = {
             'bower_components/font-awesome/scss',
             'bower_components/foundation-sites/scss'
         ],
-        comments: true,
-        source_map: true,
-        time: true
-
+        sourceComments: true
     }
 };
 
