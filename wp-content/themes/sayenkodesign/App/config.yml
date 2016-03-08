@@ -3,7 +3,7 @@ parameters:
   twig.options:
     debug:            "%WP_DEBUG%"
     charset:          "utf-8"
-    cache:            "%tempalte_dir%/var/twig/views"
+    cache:            null #"%tempalte_dir%/var/twig/views"
     auto_reload:      "%WP_DEBUG%"
     strict_variables: true
     autoescape:       true
@@ -15,8 +15,24 @@ services:
     arguments: ["%twig.path%"]
   twig.post:
     class: "App\\Twig\\Post"
+  twig.page:
+    class: "App\\Twig\\Page"
+  twig.fields:
+    class: "App\\Twig\\Page"
+  twig.attachment:
+    class: "App\\Twig\\Attachment"
+  twig.bookmark:
+    class: "App\\Twig\\Bookmark"
+  twig.terms:
+    class: "App\\Twig\\Terms"
+  twig.other:
+    class: "App\\Twig\\Other"
   twig.environment:
     class: "Twig_Environment"
     arguments: ["@twig.loader", "%twig.options%"]
     calls:
       - [addExtension, ["@twig.post"]]
+      - [addExtension, ["@twig.page"]]
+      - [addExtension, ["@twig.attachment"]]
+      - [addExtension, ["@twig.bookmark"]]
+      - [addExtension, ["@twig.terms"]]
