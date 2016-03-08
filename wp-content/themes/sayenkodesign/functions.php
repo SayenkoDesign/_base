@@ -1,10 +1,12 @@
 <?php
-require_once __DIR__ . '/vendor/autoload.php';
+require_once __DIR__ . '/bootstrap.php';
 
 // include ACF fields if not in debug mode
 if(!WP_DEBUG) {
     require_once __DIR__ . '/App/ACF/options.php';
 }
+
+$container->get("twig.loader");
 
 // options page for ACF
 if(function_exists('acf_add_options_page')) {

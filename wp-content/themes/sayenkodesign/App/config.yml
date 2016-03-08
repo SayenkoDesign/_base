@@ -1,0 +1,18 @@
+parameters:
+  twig.path: "%tempalte_dir%/App"
+  twig.options:
+    debug:            "%WP_DEBUG%"
+    charset:          "utf-8"
+    cache:            "/var/twig/views"
+    auto_reload:      "%WP_DEBUG%"
+    strict_variables: true
+    autoescape:       true
+    optimizations:    -1
+
+services:
+  twig.loader:
+    class: "Twig_Loader_Filesystem"
+    arguments: ["%twig.path%"]
+  twig.environment:
+    class: "Twig_Environment"
+    arguments: ["@twig.loader", "%twig.options%"]
