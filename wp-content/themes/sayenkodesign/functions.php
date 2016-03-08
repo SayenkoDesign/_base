@@ -6,8 +6,6 @@ if(!WP_DEBUG) {
     require_once __DIR__ . '/App/ACF/options.php';
 }
 
-$container->get("twig.loader");
-
 // options page for ACF
 if(function_exists('acf_add_options_page')) {
     acf_add_options_page([

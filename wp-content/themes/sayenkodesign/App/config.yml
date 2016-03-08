@@ -1,9 +1,9 @@
 parameters:
-  twig.path: "%tempalte_dir%/App"
+  twig.path: "%tempalte_dir%/App/views"
   twig.options:
     debug:            "%WP_DEBUG%"
     charset:          "utf-8"
-    cache:            "/var/twig/views"
+    cache:            "%tempalte_dir%/var/twig/views"
     auto_reload:      "%WP_DEBUG%"
     strict_variables: true
     autoescape:       true
@@ -13,6 +13,10 @@ services:
   twig.loader:
     class: "Twig_Loader_Filesystem"
     arguments: ["%twig.path%"]
+  twig.post:
+    class: "App\\Twig\\Post"
   twig.environment:
     class: "Twig_Environment"
     arguments: ["@twig.loader", "%twig.options%"]
+    calls:
+      - [addExtension, ["@twig.post"]]
