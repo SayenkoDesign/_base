@@ -1,5 +1,10 @@
 <?php
-require_once 'vendor/autoload.php';
+require_once __DIR__ . '/vendor/autoload.php';
+
+// include ACF fields if not in debug mode
+if(!WP_DEBUG) {
+    require_once __DIR__ . '/App/ACF/options.php';
+}
 
 // options page for ACF
 if(function_exists('acf_add_options_page')) {
