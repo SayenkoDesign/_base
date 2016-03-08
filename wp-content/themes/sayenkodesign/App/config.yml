@@ -27,6 +27,12 @@ services:
     class: "App\\Twig\\Terms"
   twig.other:
     class: "App\\Twig\\Other"
+  twig.category:
+    class: "App\\Twig\\Category"
+  twig.tag:
+    class: "App\\Twig\\Tag"
+  twig.taxonomy:
+    class: "App\\Twig\\Taxonomy"
   twig.environment:
     class: "Twig_Environment"
     arguments: ["@twig.loader", "%twig.options%"]
@@ -36,3 +42,6 @@ services:
       - [addExtension, ["@twig.attachment"]]
       - [addExtension, ["@twig.bookmark"]]
       - [addExtension, ["@twig.terms"]]
+      - [addExtension, ["@twig.category"]]
+      - [addExtension, ["@twig.tag"]]
+      - [addExtension, ["@twig.taxonomy"]]
