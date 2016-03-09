@@ -33,6 +33,42 @@ services:
     class: "App\\Twig\\Tag"
   twig.taxonomy:
     class: "App\\Twig\\Taxonomy"
+  twig.user:
+    class: "App\\Twig\\User"
+  twig.feed:
+    class: "App\\Twig\\Feed"
+  twig.HTTP:
+    class: "App\\Twig\\HTTP"
+  twig.Comment:
+    class: "App\\Twig\\Comment"
+  twig.filter:
+    class: "App\\Twig\\Filter"
+  twig.action:
+    class: "App\\Twig\\Action"
+  twig.widget:
+    class: "App\\Twig\\Widget"
+  twig.setting:
+    class: "App\\Twig\\Setting"
+  twig.shortcode:
+    class: "App\\Twig\\Shortcode"
+  twig.theme:
+    class: "App\\Twig\\Theme"
+  twig.format:
+    class: "App\\Twig\\Format"
+  twig.time:
+    class: "App\\Twig\\time"
+  twig.serialize:
+    class: "App\\Twig\\Serialize"
+  twig.options:
+    class: "App\\Twig\\Options"
+  twig.transient:
+    class: "App\\Twig\\Transient"
+  twig.security:
+    class: "App\\Twig\\Security"
+  twig.localization:
+    class: "App\\Twig\\Localization"
+  twig.conditional:
+    class: "App\\Twig\\Conditional"
   twig.environment:
     class: "Twig_Environment"
     arguments: ["@twig.loader", "%twig.options%"]
@@ -45,3 +81,21 @@ services:
       - [addExtension, ["@twig.category"]]
       - [addExtension, ["@twig.tag"]]
       - [addExtension, ["@twig.taxonomy"]]
+      - [addExtension, ["@twig.user"]]
+      - [addExtension, ["@twig.feed"]]
+      - [addExtension, ["@twig.HTTP"]]
+      - [addExtension, ["@twig.comment"]]
+      - [addExtension, ["@twig.filter"]]
+      - [addExtension, ["@twig.action"]]
+      - [addExtension, ["@twig.widget"]]
+      - [addExtension, ["@twig.setting"]]
+      - [addExtension, ["@twig.shortcode"]]
+      - [addExtension, ["@twig.theme"]]
+      - [addExtension, ["@twig.format"]]
+      - [addExtension, ["@twig.time"]]
+      - [addExtension, ["@twig.serialize"]]
+      - [addExtension, ["@twig.options"]]
+      - [addExtension, ["@twig.transient"]]
+      - [addExtension, ["@twig.security"]]
+      - [addExtension, ["@twig.localization"]]
+      - [addExtension, ["@twig.conditional"]]

@@ -909,7 +909,7 @@ function get_comments_number_text( $zero = false, $one = false, $more = false ) 
  * @return string The comment content.
  */
 function get_comment_text( $comment_ID = 0, $args = array() ) {
-	$comment = get_comment( $comment_ID );
+		$comment = get_comment( $comment_ID );
 
 	/**
 	 * Filter the text of a comment.
