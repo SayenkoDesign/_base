@@ -3,7 +3,7 @@ namespace App\Twig;
 
 use Twig_Extension;
 
-class Fields extends Twig_Extension
+class Shortcode extends Twig_Extension
 {
 
     public function getFunctions()

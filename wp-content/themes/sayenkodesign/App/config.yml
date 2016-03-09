@@ -47,8 +47,6 @@ services:
     class: "App\\Twig\\Action"
   twig.widget:
     class: "App\\Twig\\Widget"
-  twig.setting:
-    class: "App\\Twig\\Setting"
   twig.shortcode:
     class: "App\\Twig\\Shortcode"
   twig.theme:
@@ -59,8 +57,8 @@ services:
     class: "App\\Twig\\time"
   twig.serialize:
     class: "App\\Twig\\Serialize"
-  twig.options:
-    class: "App\\Twig\\Options"
+  twig.option:
+    class: "App\\Twig\\Option"
   twig.transient:
     class: "App\\Twig\\Transient"
   twig.security:
@@ -69,6 +67,8 @@ services:
     class: "App\\Twig\\Localization"
   twig.conditional:
     class: "App\\Twig\\Conditional"
+  twig.misc:
+    class: "App\\Twig\\Misc"
   twig.environment:
     class: "Twig_Environment"
     arguments: ["@twig.loader", "%twig.options%"]
@@ -88,14 +88,14 @@ services:
       - [addExtension, ["@twig.filter"]]
       - [addExtension, ["@twig.action"]]
       - [addExtension, ["@twig.widget"]]
-      - [addExtension, ["@twig.setting"]]
       - [addExtension, ["@twig.shortcode"]]
       - [addExtension, ["@twig.theme"]]
       - [addExtension, ["@twig.format"]]
       - [addExtension, ["@twig.time"]]
       - [addExtension, ["@twig.serialize"]]
-      - [addExtension, ["@twig.options"]]
+      - [addExtension, ["@twig.option"]]
       - [addExtension, ["@twig.transient"]]
       - [addExtension, ["@twig.security"]]
       - [addExtension, ["@twig.localization"]]
       - [addExtension, ["@twig.conditional"]]
+      - [addExtension, ["@twig.misc"]]
