@@ -3,18 +3,14 @@ namespace App\Twig;
 
 use Twig_Extension;
 
-class Transient extends Twig_Extension
+class ACF extends Twig_Extension
 {
 
     public function getFunctions()
     {
         return array(
-            new \Twig_SimpleFunction('get_transient', function ($transient) {
-                return get_transient( $transient );
-            }),
-
-            new \Twig_SimpleFunction('get_transient', function ($transient) {
-                return get_transient( $transient );
+            new \Twig_SimpleFunction('get_field', function ($selector, $post_id = false, $format_value = true) {
+                return get_field($selector, $post_id, $format_value);
             }),
         );
     }

@@ -13,89 +13,16 @@ services:
   twig.loader:
     class: "Twig_Loader_Filesystem"
     arguments: ["%twig.path%"]
-  twig.post:
-    class: "App\\Twig\\Post"
-  twig.page:
-    class: "App\\Twig\\Page"
-  twig.fields:
-    class: "App\\Twig\\Page"
-  twig.attachment:
-    class: "App\\Twig\\Attachment"
-  twig.bookmark:
-    class: "App\\Twig\\Bookmark"
-  twig.terms:
-    class: "App\\Twig\\Terms"
-  twig.other:
-    class: "App\\Twig\\Other"
-  twig.category:
-    class: "App\\Twig\\Category"
-  twig.tag:
-    class: "App\\Twig\\Tag"
-  twig.taxonomy:
-    class: "App\\Twig\\Taxonomy"
-  twig.user:
-    class: "App\\Twig\\User"
-  twig.feed:
-    class: "App\\Twig\\Feed"
-  twig.HTTP:
-    class: "App\\Twig\\HTTP"
-  twig.Comment:
-    class: "App\\Twig\\Comment"
-  twig.filter:
-    class: "App\\Twig\\Filter"
-  twig.action:
-    class: "App\\Twig\\Action"
-  twig.widget:
-    class: "App\\Twig\\Widget"
-  twig.shortcode:
-    class: "App\\Twig\\Shortcode"
-  twig.theme:
-    class: "App\\Twig\\Theme"
-  twig.format:
-    class: "App\\Twig\\Format"
-  twig.time:
-    class: "App\\Twig\\time"
-  twig.serialize:
-    class: "App\\Twig\\Serialize"
-  twig.option:
-    class: "App\\Twig\\Option"
-  twig.transient:
-    class: "App\\Twig\\Transient"
-  twig.security:
-    class: "App\\Twig\\Security"
-  twig.localization:
-    class: "App\\Twig\\Localization"
-  twig.conditional:
-    class: "App\\Twig\\Conditional"
-  twig.misc:
-    class: "App\\Twig\\Misc"
+  twig.debug:
+    class: "Twig_Extension_Debug"
+  twig.acf:
+    class: "App\\Twig\\ACF"
+  twig.wordpress:
+    class: "App\\Twig\\WordPress"
   twig.environment:
     class: "Twig_Environment"
     arguments: ["@twig.loader", "%twig.options%"]
     calls:
-      - [addExtension, ["@twig.post"]]
-      - [addExtension, ["@twig.page"]]
-      - [addExtension, ["@twig.attachment"]]
-      - [addExtension, ["@twig.bookmark"]]
-      - [addExtension, ["@twig.terms"]]
-      - [addExtension, ["@twig.category"]]
-      - [addExtension, ["@twig.tag"]]
-      - [addExtension, ["@twig.taxonomy"]]
-      - [addExtension, ["@twig.user"]]
-      - [addExtension, ["@twig.feed"]]
-      - [addExtension, ["@twig.HTTP"]]
-      - [addExtension, ["@twig.comment"]]
-      - [addExtension, ["@twig.filter"]]
-      - [addExtension, ["@twig.action"]]
-      - [addExtension, ["@twig.widget"]]
-      - [addExtension, ["@twig.shortcode"]]
-      - [addExtension, ["@twig.theme"]]
-      - [addExtension, ["@twig.format"]]
-      - [addExtension, ["@twig.time"]]
-      - [addExtension, ["@twig.serialize"]]
-      - [addExtension, ["@twig.option"]]
-      - [addExtension, ["@twig.transient"]]
-      - [addExtension, ["@twig.security"]]
-      - [addExtension, ["@twig.localization"]]
-      - [addExtension, ["@twig.conditional"]]
-      - [addExtension, ["@twig.misc"]]
+      - [addExtension, ["@twig.debug"]]
+      - [addExtension, ["@twig.acf"]]
+      - [addExtension, ["@twig.wordpress"]]
