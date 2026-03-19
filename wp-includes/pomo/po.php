@@ -47,8 +47,21 @@ class PO extends Gettext_Translations {
 	 * @return string sequence of mgsgid/msgstr PO strings, doesn't containt newline at the end
 	 */
 	function export_entries() {
-		//TODO sorting
-		return implode("\n\n", array_map(array('PO', 'export_entry'), $this->entries));
+		$entries = $this->entries;
+		uasort( $entries, array( 'PO', 'compare_entries_by_msgid' ) );
+		return implode("\n\n", array_map(array('PO', 'export_entry'), $entries));
+	}
+
+	/**
+	 * Compares two Translation_Entry objects by their singular (msgid) strings.
+	 *
+	 * @static
+	 * @param Translation_Entry $a
+	 * @param Translation_Entry $b
+	 * @return int negative, zero, or positive
+	 */
+	public static function compare_entries_by_msgid( $a, $b ) {
+		return strcmp( $a->singular, $b->singular );
 	}
 
 	/**
