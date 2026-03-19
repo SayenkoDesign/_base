@@ -31,12 +31,14 @@ class Sayenko_Chatbot_Admin {
 			update_option( 'sayenko_chatbot_api_key',    sanitize_text_field( wp_unslash( $_POST['api_key']    ?? '' ) ) );
 			update_option( 'sayenko_chatbot_target_url', esc_url_raw( wp_unslash( $_POST['target_url'] ?? '' ) ) );
 			update_option( 'sayenko_chatbot_max_pages',  absint( $_POST['max_pages'] ?? 100 ) );
+			update_option( 'sayenko_chatbot_model',      sanitize_text_field( wp_unslash( $_POST['model'] ?? 'claude-haiku-4-5-20251001' ) ) );
 			$notice = '<div class="notice notice-success is-dismissible"><p>Settings saved.</p></div>';
 		}
 
 		$api_key    = get_option( 'sayenko_chatbot_api_key',    '' );
 		$target_url = get_option( 'sayenko_chatbot_target_url', 'https://sayenkodesign.com' );
 		$max_pages  = (int) get_option( 'sayenko_chatbot_max_pages', 100 );
+		$model      = get_option( 'sayenko_chatbot_model', 'claude-haiku-4-5-20251001' );
 		$status     = get_option( 'sayenko_chatbot_crawl_status', [] );
 
 		global $wpdb;
@@ -70,8 +72,30 @@ class Sayenko_Chatbot_Admin {
 							/>
 							<p class="description">
 								Obtain your key from <a href="https://console.anthropic.com/" target="_blank" rel="noopener noreferrer">console.anthropic.com</a>.
-								The chatbot uses <strong>Claude Opus</strong> (claude-opus-4-6).
 							</p>
+						</td>
+					</tr>
+					<tr>
+						<th scope="row"><label for="model">Claude Model</label></th>
+						<td>
+							<select id="model" name="model">
+								<?php
+								$models = [
+									'claude-haiku-4-5-20251001' => 'Claude Haiku 4.5 (fastest, cheapest)',
+									'claude-sonnet-4-6'         => 'Claude Sonnet 4.6 (balanced)',
+									'claude-opus-4-6'           => 'Claude Opus 4.6 (most capable)',
+								];
+								foreach ( $models as $id => $label ) {
+									printf(
+										'<option value="%s"%s>%s</option>',
+										esc_attr( $id ),
+										selected( $model, $id, false ),
+										esc_html( $label )
+									);
+								}
+								?>
+							</select>
+							<p class="description">Choose the model your API key has access to. If you see model errors, try a different option.</p>
 						</td>
 					</tr>
 					<tr>

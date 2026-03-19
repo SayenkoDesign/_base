@@ -10,7 +10,7 @@ defined( 'ABSPATH' ) || exit;
 
 class Sayenko_Claude_API {
 
-	private const MODEL      = 'claude-3-5-haiku-20241022';
+	private const MODEL_DEFAULT = 'claude-haiku-4-5-20251001';
 	private const API_URL    = 'https://api.anthropic.com/v1/messages';
 	private const MAX_TOKENS = 1024;
 
@@ -196,8 +196,10 @@ class Sayenko_Claude_API {
 	 * to the client as SSE events.
 	 */
 	private function call_claude_stream( string $api_key, string $system_prompt, array $messages ): void {
+		$model = get_option( 'sayenko_chatbot_model', self::MODEL_DEFAULT );
+
 		$body = wp_json_encode( [
-			'model'      => self::MODEL,
+			'model'      => $model,
 			'max_tokens' => self::MAX_TOKENS,
 			'stream'     => true,
 			'system'     => $system_prompt,
