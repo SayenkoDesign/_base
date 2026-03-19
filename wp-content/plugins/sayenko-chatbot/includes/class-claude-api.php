@@ -10,7 +10,7 @@ defined( 'ABSPATH' ) || exit;
 
 class Sayenko_Claude_API {
 
-	private const MODEL      = 'claude-opus-4-6';
+	private const MODEL      = 'claude-haiku-4-5-20251001';
 	private const API_URL    = 'https://api.anthropic.com/v1/messages';
 	private const MAX_TOKENS = 1024;
 
