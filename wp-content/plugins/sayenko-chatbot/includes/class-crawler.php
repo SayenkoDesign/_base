@@ -68,6 +68,9 @@ class Sayenko_Chatbot_Crawler {
 		$this->queue      = [ $this->target_url ];
 		$this->page_count = 0;
 
+		// Seed queue from sitemap so BFS doesn't miss pages not reachable via nav links.
+		$this->seed_from_sitemap();
+
 		while ( ! empty( $this->queue ) && $this->page_count < $this->max_pages ) {
 			$url = array_shift( $this->queue );
 			$url = strtok( $url, '#' ); // Strip fragment.
@@ -111,6 +114,84 @@ class Sayenko_Chatbot_Crawler {
 		update_option( 'sayenko_chatbot_crawl_status', $status );
 
 		return $status;
+	}
+
+	/**
+	 * Parse the site's XML sitemap(s) and add all crawlable URLs to the queue.
+	 *
+	 * Tries /wp-sitemap.xml (WordPress core) then /sitemap.xml (SEO plugins).
+	 * Handles both sitemap indexes and regular sitemaps transparently.
+	 */
+	private function seed_from_sitemap(): void {
+		$candidates = [
+			$this->target_url . '/wp-sitemap.xml',
+			$this->target_url . '/sitemap.xml',
+			$this->target_url . '/sitemap_index.xml',
+		];
+
+		foreach ( $candidates as $sitemap_url ) {
+			if ( $this->load_sitemap( $sitemap_url ) ) {
+				return; // Stop after the first successful sitemap.
+			}
+		}
+	}
+
+	/**
+	 * Load a single sitemap or sitemap-index URL and enqueue its URLs.
+	 *
+	 * @param  string $sitemap_url
+	 * @return bool  True if the sitemap was found and contained at least one URL.
+	 */
+	private function load_sitemap( string $sitemap_url ): bool {
+		$response = wp_remote_get( $sitemap_url, [
+			'timeout'    => 15,
+			'user-agent' => 'SayenkoChatbotCrawler/1.0 (WordPress plugin; contact@sayenkodesign.com)',
+			'sslverify'  => true,
+		] );
+
+		if ( is_wp_error( $response ) || 200 !== (int) wp_remote_retrieve_response_code( $response ) ) {
+			return false;
+		}
+
+		$body = wp_remote_retrieve_body( $response );
+		if ( empty( $body ) ) {
+			return false;
+		}
+
+		$xml = @simplexml_load_string( $body );
+		if ( false === $xml ) {
+			return false;
+		}
+
+		$xml->registerXPathNamespace( 'sm', 'http://www.sitemaps.org/schemas/sitemap/0.9' );
+		$found = 0;
+
+		// Sitemap index: contains <sitemap><loc>…</loc></sitemap> entries.
+		$sub_sitemaps = $xml->xpath( '//sm:sitemap/sm:loc' );
+		if ( ! empty( $sub_sitemaps ) ) {
+			foreach ( $sub_sitemaps as $loc ) {
+				$this->load_sitemap( trim( (string) $loc ) );
+			}
+			$found = count( $sub_sitemaps );
+		}
+
+		// Regular sitemap: contains <url><loc>…</loc></url> entries.
+		$urls = $xml->xpath( '//sm:url/sm:loc' );
+		if ( ! empty( $urls ) ) {
+			foreach ( $urls as $loc ) {
+				$url = rtrim( trim( (string) $loc ), '/' );
+				if ( $this->is_crawlable( $url )
+					&& parse_url( $url, PHP_URL_HOST ) === $this->target_host
+					&& ! in_array( $url, $this->queue, true )
+					&& ! in_array( $url, $this->visited, true )
+				) {
+					$this->queue[] = $url;
+					$found++;
+				}
+			}
+		}
+
+		return $found > 0;
 	}
 
 	/**
