@@ -10,7 +10,7 @@ defined( 'ABSPATH' ) || exit;
 
 class Sayenko_Claude_API {
 
-	private const MODEL      = 'claude-haiku-4-5-20251001';
+	private const MODEL      = 'claude-3-5-haiku-20241022';
 	private const API_URL    = 'https://api.anthropic.com/v1/messages';
 	private const MAX_TOKENS = 1024;
 
@@ -211,7 +211,8 @@ class Sayenko_Claude_API {
 		}
 
 		// Buffer for partial SSE lines coming in from cURL.
-		$line_buffer = '';
+		$line_buffer  = '';
+		$raw_response = '';
 
 		curl_setopt_array( $ch, [
 			CURLOPT_POST           => true,
@@ -224,8 +225,9 @@ class Sayenko_Claude_API {
 				'x-api-key: ' . $api_key,
 				'anthropic-version: 2023-06-01',
 			],
-			CURLOPT_WRITEFUNCTION  => function ( $ch, $chunk ) use ( &$line_buffer ) {
-				$line_buffer .= $chunk;
+			CURLOPT_WRITEFUNCTION  => function ( $ch, $chunk ) use ( &$line_buffer, &$raw_response ) {
+				$raw_response .= $chunk;
+				$line_buffer  .= $chunk;
 
 				// Process every complete line in the buffer.
 				while ( false !== ( $pos = strpos( $line_buffer, "\n" ) ) ) {
@@ -279,7 +281,12 @@ class Sayenko_Claude_API {
 		if ( ! empty( $curl_error ) ) {
 			$this->sse_error( 'Connection error. Please try again.' );
 		} elseif ( $http_code > 0 && 200 !== $http_code ) {
-			$this->sse_error( "API returned HTTP {$http_code}. Please try again." );
+			$error_msg = "API error (HTTP {$http_code}).";
+			$parsed    = json_decode( $raw_response, true );
+			if ( ! empty( $parsed['error']['message'] ) ) {
+				$error_msg = $parsed['error']['message'];
+			}
+			$this->sse_error( $error_msg );
 		}
 
 		// Signal end of stream.
