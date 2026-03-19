@@ -197,12 +197,11 @@ class Sayenko_Claude_API {
 	 */
 	private function call_claude_stream( string $api_key, string $system_prompt, array $messages ): void {
 		$body = wp_json_encode( [
-			'model'     => self::MODEL,
+			'model'      => self::MODEL,
 			'max_tokens' => self::MAX_TOKENS,
-			'stream'    => true,
-			'thinking'  => [ 'type' => 'adaptive' ],
-			'system'    => $system_prompt,
-			'messages'  => $messages,
+			'stream'     => true,
+			'system'     => $system_prompt,
+			'messages'   => $messages,
 		] );
 
 		$ch = curl_init( self::API_URL );
